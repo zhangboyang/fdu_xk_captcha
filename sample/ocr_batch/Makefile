@@ -10,7 +10,7 @@ ocr_batch: $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 test: ocr_batch
-	time ./ocr_batch | diff - ../../test/testdata/answer.txt
+	time ./ocr_batch | diff -b ../../test/testdata/answer.txt -
 
 clean: 
 	rm -f ocr_batch $(OBJ)
