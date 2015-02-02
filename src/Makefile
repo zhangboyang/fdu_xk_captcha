@@ -1,4 +1,5 @@
-CFLAGS = -ansi -pedantic -Wall -O2
+CC = gcc
+CFLAGS = -Wall -O2
 OBJ = jpeg.o captcha.o ocr.o
 TARGET = libxkocr.a
 
