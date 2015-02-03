@@ -19,9 +19,12 @@ struct my_error_mgr {
 };
 typedef struct my_error_mgr * my_error_ptr;
 
+static void output_message(j_common_ptr cinfo) {}
+
 static void my_error_exit(j_common_ptr cinfo)
 {
     my_error_ptr myerr = (my_error_ptr) cinfo->err;
+    (*cinfo->err->output_message) (cinfo);
     longjmp(myerr->setjmp_buffer, 1);
 }
 
@@ -34,6 +37,7 @@ int load_jpeg_captcha(xk_captcha p, void *buf, int len)
     
     cinfo.err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
+    jerr.pub.output_message = output_message;
     if (setjmp(jerr.setjmp_buffer)) { /* error */
         jpeg_destroy_decompress(&cinfo);
         return -1;
